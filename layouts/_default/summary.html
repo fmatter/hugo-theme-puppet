@@ -12,7 +12,7 @@
       </div>
   </a>
   <p class="post-meta">
-      Posted by {{ with $.Params.author }} {{ $.Params.author }} {{ else }} {{ .Site.Params.author }} {{ end }} on {{ .Date.Format "Mon, Jan 2, 2006" }}
+      {{ if isset .Params "author" }} Posted by {{ with $.Params.author }} {{ $.Params.author }} {{ end }} {{ else }} {{ .Site.Params.author }} {{ end }} on {{ .Date.Format "Mon, Jan 2, 2006" }}
   </p>
 </div>
 <hr>
