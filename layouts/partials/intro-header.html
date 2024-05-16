@@ -22,12 +22,6 @@
             <a class="tag" href="{{ .Page.RelPermalink }}" title="{{ .LinkTitle}}">{{ .LinkTitle }}</a>
             {{ end }}
           </div>
-          <h1>{{ .Title }}</h1>
-          <h2 class="subheading">{{ $.Params.subtitle }}</h2>
-          <span class="meta">
-            {{ if isset .Params "author" }} von {{ with $.Params.author }} {{ $.Params.author }}, {{ end }} {{ else }} {{ .Site.Params.author }} {{ end }}
-             {{ .Date.Format "Mon, Jan 2, 2006" }}
-          </span>
         </div>
       </div>
     </div>
