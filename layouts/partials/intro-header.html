@@ -1,61 +1,82 @@
-{{ $header_img := .Scratch.Get "header_img" }}
+{{ define "main" }}
 
-{{ if .IsPage }}
-<style type="text/css">
-  header.intro-header {
-    position: relative;
-    background-image: url('{{ with $header_img }}{{- . -}}{{ end }}');
-  }
-</style>
-{{ if $header_img }}
-<header class="intro-header ">
-{{ else }}
-<header class="intro-header style-text">
-{{ end }}
-  <div class="header-mask"></div>
+<!-- Post Content -->
+<article>
   <div class="container">
     <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <div class="post-heading">
-          <div class="tags">
-            {{ range (.GetTerms "tags") }}
-            <a class="tag" href="{{ .Page.RelPermalink }}" title="{{ .LinkTitle}}">{{ .LinkTitle }}</a>
-            {{ end }}
-          </div>
+
+      <!-- Post Container -->
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              post-container">
           <h1>{{ .Title }}</h1>
-          <h2 class="subheading">{{ $.Params.subtitle }}</h2>
+          <h4 class="subheading">{{ $.Params.description }}</h4>
           <span class="meta">
             {{ if isset .Params "author" }} von {{ with $.Params.author }} {{ $.Params.author }}, {{ end }} {{ else }} {{ .Site.Params.author }} {{ end }}
              {{ .Date.Format "Mon, Jan 2, 2006" }}
           </span>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-{{ else }}
-{{ with $header_img }}
-<header class="intro-header" style="background-image: url('{{- . -}}')">
-{{ else}}
-<header class="intro-header style-text">
-{{ end }}
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        {{ if eq (.Param "short") true }}
-        <div class="site-heading" id="tag-heading">
-        {{ else }}
-        <div class="site-heading">
-        {{ end }}
-          <h1>{{ with .Title }}{{ . }}{{ else }}{{ .Site.Title }}{{ end }}</h1>
-          {{ $description := .Description }}
-          {{ if .IsHome }}
-          {{ $description = .Site.Params.description }}
+
+        {{ .Content }}
+
+        <hr style="visibility: hidden;" />
+        <ul class="pager">
+          {{ with .Prev }}
+          <li class="previous">
+            <a href="{{ .RelPermalink }}" data-toggle="tooltip" data-placement="top" title="{{ .Title }}">
+              früher<br>
+              <span>{{ .Title }}</span>
+            </a>
+          </li>
           {{ end }}
-          <span class="subheading">{{ $description }}</span>
+          {{ with .Next }}
+          <li class="next">
+            <a href="{{ .RelPermalink }}" data-toggle="tooltip" data-placement="top" title="{{ .Title }}">
+              später<br>
+              <span>{{ .Title }}</span>
+            </a>
+          </li>
+          {{ end }}
+        </ul>
+        <hr style="visibility: hidden;" />
+
+        <!-- comments -->
+        {{ partial "comments.html" . }}
+
+      </div>
+
+      <!-- Side Catalog Container -->
+      {{ $toc := .Scratch.Get "toc" }}
+      {{ if $toc }}
+      <div class="
+              col-lg-2 col-lg-offset-0
+              visible-lg-block
+              sidebar-container
+              catalog-container">
+        <div class="side-catalog">
+          <hr class="hidden-sm hidden-xs">
+          <h5>
+            <a class="catalog-toggle" href="#">CATALOG</a>
+          </h5>
+          <ul class="catalog-body"></ul>
         </div>
+      </div>
+      {{ end }}
+      <!-- Sidebar Container -->
+      <div class="
+              col-lg-8 col-lg-offset-2
+              col-md-10 col-md-offset-1
+              sidebar-container">
+
+        <!-- Featured Tags -->
+        {{ .Scratch.Set "bottom" true }}
+        {{ partial "featured-tags.html" . }}
+
+        <!-- Friends Blog -->
+        {{ partial "friends.html" . }}
       </div>
     </div>
   </div>
-</header>
+</article>
+
 {{ end }}

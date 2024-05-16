@@ -10,6 +10,13 @@
               col-lg-8 col-lg-offset-2
               col-md-10 col-md-offset-1
               post-container">
+          <h1>{{ .Title }}</h1>
+          <h4 class="subheading">{{ $.Params.description }}</h4>
+          <span class="meta">
+            {{ if isset .Params "author" }} von {{ with $.Params.author }} {{ $.Params.author }}, {{ end }} {{ else }} {{ .Site.Params.author }} {{ end }}
+             {{ .Date.Format "Mon, Jan 2, 2006" }}
+          </span>
+
         {{ .Content }}
 
         <hr style="visibility: hidden;" />
